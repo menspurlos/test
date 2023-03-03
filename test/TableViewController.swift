@@ -14,9 +14,8 @@ class TableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        al()
-     
+        getDataAndReloadView()
+      
     }
 
     // MARK: - Table view data source
@@ -35,10 +34,10 @@ class TableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TableViewCell
 
-        print (self.docs)
-        cell.label.text = docs[indexPath.row].pred
 
-        return cell
+            cell.set(object: docs[indexPath.row])
+            return cell
+        
     }
     
 
@@ -88,84 +87,44 @@ class TableViewController: UITableViewController {
     */
 
 
-
-func create() {
-    
-    
-    let url = "http://5.130.157.177/CBBudzhet/hs/http"
-    let dataPeredach: [String : Any] = ["ss": "2", "dd" : true]
-    
-    print (dataPeredach)
-    
-    AF.request(url,
-               method: .post,
-               parameters: dataPeredach,
-               encoding: URLEncoding.default ,
-               headers: nil,
-               interceptor: nil
-    ).validate().response { responce in
-
-    
-        switch responce.result {
-        case .success(let data):
-            do {
-                let jsonData = try JSONDecoder().decode([CreateDoc].self, from: data!)
-                print (jsonData[0].number)
-                
-            } catch {
-                print (error.localizedDescription)
-            }
-        case.failure(let error): print (error.localizedDescription)
-        }
-    }
-    
-}
-
-    func al ()  {
+    func getDataAndReloadView() {
         
-        // http://5.130.157.177/CBBudzhet/hs/http
-        
-        let url = "http://5.130.157.177/CBBudzhet/hs/http"
-        
-        AF.request(url,
-                   method: .get,
-                   parameters: nil,
-                   encoding: URLEncoding.default ,
-                   headers: nil,
-                   interceptor: nil
-        ).validate().response { responce in
-            
-            
-            switch responce.result {
-            case .success(let data):
-                do {
-                    self.docs = try JSONDecoder().decode([Documents].self, from: data!)
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
-                } catch {
-                    print (error.localizedDescription)
-                }
-            case.failure(let error): print (error.localizedDescription)
+        APIhttp.sharedAPI.GetDocs { dataAPI in
+            self.docs = dataAPI
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
             }
         }
     }
-
-}
-
-
-struct Documents: Codable {
-    let type: String
-    let number: String
-    let date: String
-    let status: Bool
-    let delete: Bool
-    let pred: String
     
+    
+    
+    func allertShow(number: String) {
+        
+        let alertController = UIAlertController(title: "Create Doc",
+                                                message: "document was created, number  \(number)",
+                                                preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+        
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true)
+    }
+ 
+    
+    
+    @IBAction func tapButtonCreateDoc(_ sender: UIBarButtonItem) {
+        APIhttp.sharedAPI.create { dataAPI in
+            self.allertShow(number: dataAPI[0].number)
+            self.getDataAndReloadView()
+        }
+    }
+    
+    @IBAction func tapRefreshButton(_ sender: UIBarButtonItem) {
+        self.getDataAndReloadView()
+    }
 }
 
-struct CreateDoc: Codable {
-    let number: String
-}
+
+
 
 
