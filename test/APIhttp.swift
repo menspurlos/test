@@ -14,7 +14,7 @@ class APIhttp {
     
     let url = "http://5.130.157.177/CBBudzhet/hs/http"
     var docs = [Documents]()
-    
+
     func create(compliteHandler: @escaping (_ dataAPI:[CreateDoc]) -> Void) {
         AF.request(url,
                    method: .post,
@@ -58,4 +58,5 @@ class APIhttp {
             }
         }
     }
+    
 }
