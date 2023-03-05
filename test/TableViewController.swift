@@ -11,7 +11,7 @@ import Alamofire
 class TableViewController: UITableViewController {
 
     private var docs: [Documents] = []
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         getDataAndReloadView()
@@ -39,8 +39,9 @@ class TableViewController: UITableViewController {
 
 
     func getDataAndReloadView() {
-        APIhttp.sharedAPI.GetDocs {[weak self] dataAPI in
+        APIhttp.sharedAPI.APICall(method: .get) {[weak self] dataAPI in
             guard let self = self else { return }
+            guard let dataAPI = dataAPI as? [Documents] else { return }
             self.docs = dataAPI
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -50,7 +51,9 @@ class TableViewController: UITableViewController {
  
 
     @IBAction func tapButtonCreateDoc(_ sender: UIBarButtonItem) {
-        APIhttp.sharedAPI.create { dataAPI in
+        APIhttp.sharedAPI.APICall(method: .post) {[weak self] dataAPI in
+            guard let self = self else { return }
+            guard let dataAPI = dataAPI as? [CreateDoc] else { return }
             self.allertShow(number: dataAPI[0].number)
             self.getDataAndReloadView()
         }
@@ -60,7 +63,6 @@ class TableViewController: UITableViewController {
         self.getDataAndReloadView()
     }
 }
-
 
 
 
