@@ -11,10 +11,6 @@ import Alamofire
 class TableViewController: UITableViewController {
 
     private var docs: [Documents] = []
-    let ArrayStructOfDoc = [[Documents(type: "", number: "", date: "", status: true, delete: true, pred: "")],
-                            CreateDoc(number: "")] as [Any]
-
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
