@@ -8,10 +8,11 @@
 import UIKit
 
 extension TableViewController {
-    func allertShow(number: String) {
-        
-        let alertController = UIAlertController(title: "Create Doc",
-                                                message: "document was created, number  \(number)",
+    
+    func allertShow(text: String, title: String) {
+    
+        let alertController = UIAlertController(title: title,
+                                                message: text,
                                                 preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "Cancel", style: .default)
         

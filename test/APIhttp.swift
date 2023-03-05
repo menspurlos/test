@@ -14,7 +14,7 @@ class APIhttp {
     
     let url = "http://5.130.157.177/CBBudzhet/hs/http"
     
-    func APICall<T: Decodable>(method: HTTPMethod, compliteHandler: @escaping (_ dataAPI:[T]) -> Void) {
+    func APICall<T: Decodable>(method: HTTPMethod, compliteHandler: @escaping (_ dataAPI:[T]?, _ error: AFError?) -> Void) {
         AF.request(url,
                    method: method,
                    parameters: nil,
@@ -27,11 +27,13 @@ class APIhttp {
             case .success(let data):
                 do {
                     let dataAPI = try JSONDecoder().decode([T].self, from: data!)
-                    compliteHandler(dataAPI)
+                    compliteHandler(dataAPI, nil)
                 } catch {
-                    print (error.localizedDescription)
+                    let error = error as! AFError
+                    compliteHandler(nil, error)
                 }
-            case .failure(let error): print (error.localizedDescription)
+            case .failure(let error):
+                compliteHandler(nil, error)
             }
         }
     }

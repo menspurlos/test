@@ -39,21 +39,30 @@ class TableViewController: UITableViewController {
 
 
     func getDataAndReloadView() {
-        FuncForAPI.funcForAPI.GetData {[weak self] dataAPI in
+        FuncForAPI.funcForAPI.GetData {[weak self] dataAPI, error in
             guard let self = self else { return }
-            self.docs = dataAPI
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+            if let dataAPI = dataAPI {
+                self.docs = dataAPI
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            }
+            if error != nil {
+                self.allertShow(text: "Отсутствует подключение к серверу или на сервере неккоректные данные", title: "Error")
             }
         }
     }
- 
 
     @IBAction func tapButtonCreateDoc(_ sender: UIBarButtonItem) {
-        FuncForAPI.funcForAPI.PostData {[weak self] dataAPI in
+        FuncForAPI.funcForAPI.PostData {[weak self] dataAPI, error in
             guard let self = self else { return }
-            self.allertShow(number: dataAPI.first!.number)
-            self.getDataAndReloadView()
+            if let dataAPI = dataAPI {
+                self.allertShow(text: "document was created, number  \(dataAPI.first!.number)", title: "Create Doc")
+                self.getDataAndReloadView()
+            }
+            if error != nil {
+                self.allertShow(text: "Отсутствует подключение к серверу или на сервере неккоректные данные", title: "Error")
+            }
         }
     }
     
