@@ -21,19 +21,16 @@ class TableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return docs.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TableViewCell
-
 
             cell.set(object: docs[indexPath.row])
             return cell
@@ -50,19 +47,6 @@ class TableViewController: UITableViewController {
             }
         }
     }
-    
-    
-    
-//    func allertShow(number: String) {
-//        
-//        let alertController = UIAlertController(title: "Create Doc",
-//                                                message: "document was created, number  \(number)",
-//                                                preferredStyle: .alert)
-//        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
-//        
-//        alertController.addAction(cancelAction)
-//        present(alertController, animated: true)
-//    }
  
 
     @IBAction func tapButtonCreateDoc(_ sender: UIBarButtonItem) {
