@@ -13,10 +13,10 @@ class APIhttp {
     static let sharedAPI = APIhttp()
     
     let url = "http://5.130.157.177/CBBudzhet/hs/http"
-
-    func create(compliteHandler: @escaping (_ dataAPI:[CreateDoc]) -> Void) {
+    
+    func APICall (method: HTTPMethod, compliteHandler: @escaping (_ dataAPI:[Any]) -> Void) {
         AF.request(url,
-                   method: .post,
+                   method: method,
                    parameters: nil,
                    encoding: URLEncoding.default ,
                    headers: nil,
@@ -26,34 +26,19 @@ class APIhttp {
             switch responce.result {
             case .success(let data):
                 do {
-                    let dataAPI = try JSONDecoder().decode([CreateDoc].self, from: data!)
-                    compliteHandler(dataAPI)
+                    switch method {
+                    case .get:
+                        let dataAPI = try JSONDecoder().decode([Documents].self, from: data!)
+                        compliteHandler(dataAPI)
+                    case .post:
+                        let dataAPI = try JSONDecoder().decode([CreateDoc].self, from: data!)
+                        compliteHandler(dataAPI)
+                    default: return
+                    }
                 } catch {
                     print (error.localizedDescription)
                 }
             case .failure(let error): print (error.localizedDescription)
-            }
-        }
-    }
-    
-    func GetDocs(compliteHandler: @escaping (_ dataAPI:[Documents]) -> Void) {
-        AF.request(self.url,
-                   method: .get,
-                   parameters: nil,
-                   encoding: URLEncoding.default ,
-                   headers: nil,
-                   interceptor: nil
-        ).validate().response { responce in
-              
-            switch responce.result {
-            case .success(let data):
-                do {
-                    let dataAPI = try JSONDecoder().decode([Documents].self, from: data!)
-                    compliteHandler(dataAPI)
-                } catch {
-                    print (error.localizedDescription)
-                }
-            case.failure(let error): print (error.localizedDescription)
             }
         }
     }
