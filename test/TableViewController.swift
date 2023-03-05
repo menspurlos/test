@@ -39,9 +39,8 @@ class TableViewController: UITableViewController {
 
 
     func getDataAndReloadView() {
-        APIhttp.sharedAPI.APICall(method: .get) {[weak self] dataAPI in
+        FuncForAPI.funcForAPI.GetData {[weak self] dataAPI in
             guard let self = self else { return }
-            guard let dataAPI = dataAPI as? [Documents] else { return }
             self.docs = dataAPI
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -51,10 +50,9 @@ class TableViewController: UITableViewController {
  
 
     @IBAction func tapButtonCreateDoc(_ sender: UIBarButtonItem) {
-        APIhttp.sharedAPI.APICall(method: .post) {[weak self] dataAPI in
+        FuncForAPI.funcForAPI.PostData {[weak self] dataAPI in
             guard let self = self else { return }
-            guard let dataAPI = dataAPI as? [CreateDoc] else { return }
-            self.allertShow(number: dataAPI[0].number)
+            self.allertShow(number: dataAPI.first!.number)
             self.getDataAndReloadView()
         }
     }
