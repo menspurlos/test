@@ -53,16 +53,16 @@ class TableViewController: UITableViewController {
     
     
     
-    func allertShow(number: String) {
-        
-        let alertController = UIAlertController(title: "Create Doc",
-                                                message: "document was created, number  \(number)",
-                                                preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
-        
-        alertController.addAction(cancelAction)
-        present(alertController, animated: true)
-    }
+//    func allertShow(number: String) {
+//        
+//        let alertController = UIAlertController(title: "Create Doc",
+//                                                message: "document was created, number  \(number)",
+//                                                preferredStyle: .alert)
+//        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+//        
+//        alertController.addAction(cancelAction)
+//        present(alertController, animated: true)
+//    }
  
 
     @IBAction func tapButtonCreateDoc(_ sender: UIBarButtonItem) {
