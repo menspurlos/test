@@ -10,17 +10,23 @@ import Alamofire
 
 class FuncForAPI {
     
+    var api: APIHttpProtocol
+    
+    init(api: APIHttpProtocol = APIhttp()) {
+        self.api = api
+    }
+    
     static let funcForAPI = FuncForAPI()
     
     func GetData(complition: @escaping ([Documents]?, _ error: AFError?) -> Void) {
-        APIhttp.sharedAPI.APICall(method: .get, compliteHandler: complition)
+        api.APICall(method: .get, compliteHandler: complition)
     }
 
     func PostData(complition: @escaping ([CreateDoc]?, _ error: AFError?) -> Void) {
-        APIhttp.sharedAPI.APICall(method: .post, compliteHandler: complition)
+        api.APICall(method: .post, compliteHandler: complition)
     }
         
-        
+    
         
 }
 
